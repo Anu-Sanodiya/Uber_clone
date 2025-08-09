@@ -87,7 +87,7 @@ curl -X POST http://localhost:3000/user/register \
 - **Body:**
   ```json
   {
-    "message": "User already exist"
+    "message": "User already exists"
   }
   ```
 
