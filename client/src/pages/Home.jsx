@@ -5,15 +5,15 @@ import gsap from 'gsap';
 import axios from 'axios';
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel';
-// import VehiclePanel from '../components/VehiclePanel';
-// import ConfirmRide from '../components/ConfirmRide';
-// import LookingForDriver from '../components/LookingForDriver';
-// import WaitingForDriver from '../components/WaitingForDriver';
-// import { SocketContext } from '../context/SocketContext';
+import VehiclePanel from '../components/VehiclePanel';
+import ConfirmRide from '../components/ConfirmRide';
+import LookingForDriver from '../components/LookingForDriver';
+import WaitingForDriver from '../components/WaitingForDriver';
+import { SocketContext } from '../context/SocketContext';
 import { useContext } from 'react';
 import { UserDataContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
-// import LiveTracking from '../components/LiveTracking';
+import LiveTracking from '../components/LiveTracking';
 
 const Home = () => {
         const [ pickup, setPickup ] = useState('')
@@ -38,58 +38,58 @@ const Home = () => {
 
         const navigate = useNavigate()
 
-    //     const { socket } = useContext(SocketContext)
-    //     const { user } = useContext(UserDataContext)
+        const { socket } = useContext(SocketContext)
+        const { user } = useContext(UserDataContext)
 
-    //     useEffect(() => {
-    //         socket.emit("join", { userType: "user", userId: user._id })
-    //     }, [ user ])
+        useEffect(() => {
+            socket.emit("join", { userType: "user", userId: user._id })
+        }, [ user ])
 
-    //     socket.on('ride-confirmed', ride => {
-
-
-    //         setVehicleFound(false)
-    //         setWaitingForDriver(true)
-    //         setRide(ride)
-    //     })
-
-    //     socket.on('ride-started', ride => {
-    //         console.log("ride")
-    //         setWaitingForDriver(false)
-    //         navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
-    //     })
+        socket.on('ride-confirmed', ride => {
 
 
-    //     const handlePickupChange = async (e) => {
-    //         setPickup(e.target.value)
-    //         try {
-    //             const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`, {
-    //                 params: { input: e.target.value },
-    //                 headers: {
-    //                     Authorization: `Bearer ${localStorage.getItem('token')}`
-    //                 }
+            setVehicleFound(false)
+            setWaitingForDriver(true)
+            setRide(ride)
+        })
 
-    //             })
-    //             setPickupSuggestions(response.data)
-    //         } catch {
-    //             // handle error
-    //         }
-    //     }
+        socket.on('ride-started', ride => {
+            console.log("ride")
+            setWaitingForDriver(false)
+            navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
+        })
 
-    //     const handleDestinationChange = async (e) => {
-    //         setDestination(e.target.value)
-    //         try {
-    //             const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`, {
-    //                 params: { input: e.target.value },
-    //                 headers: {
-    //                     Authorization: `Bearer ${localStorage.getItem('token')}`
-    //                 }
-    //             })
-    //             setDestinationSuggestions(response.data)
-    //         } catch {
-    //             // handle error
-    //         }
-    //     }
+
+        const handlePickupChange = async (e) => {
+            setPickup(e.target.value)
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`, {
+                    params: { input: e.target.value },
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+
+                })
+                setPickupSuggestions(response.data)
+            } catch {
+                // handle error
+            }
+        }
+
+        const handleDestinationChange = async (e) => {
+            setDestination(e.target.value)
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`, {
+                    params: { input: e.target.value },
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                setDestinationSuggestions(response.data)
+            } catch {
+                // handle error
+            }
+        }
 
         const submitHandler = (e) => {
             e.preventDefault()
